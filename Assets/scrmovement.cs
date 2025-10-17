@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class scrmovement : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class scrmovement : MonoBehaviour
     public bool action = false;
     public PlayerChargesUI playerChargesUI;
 
+    public string targetscene;
     public LayerMask enemyLayer;   // Assign "Enemy" layer in Inspector
     public float attackRange = 0.32f; // 32px = 0.32 units if Pixels Per Unit = 100
     private SpriteRenderer sr;
@@ -49,6 +51,7 @@ public class scrmovement : MonoBehaviour
 
         if (Input.GetButtonDown("Fire1") && playerChargesUI.charges > 0 && action == false)
         {
+
             action = true;
             playerChargesUI.SetCharges(--playerChargesUI.charges);
             rb.velocity = Vector2.zero;
@@ -135,7 +138,30 @@ public class scrmovement : MonoBehaviour
     public void SetActionFalse()
     {
 
-        action = false; 
-      
+        action = false;
+
+    }
+    
+
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Finish")
+        {    
+            AudioSource audio = Camera.main.GetComponent<AudioSource>();
+                if (audio == null)
+                    audio = Camera.main.gameObject.AddComponent<AudioSource>();
+
+                AudioClip snd = Resources.Load<AudioClip>("sfx/sndwin");
+                if (audio != null && snd != null)
+                {
+                    audio.PlayOneShot(snd, 0.5f);
+                }
+                else
+                {
+                    Debug.Log("Audio clip not found");
+                }
+           FadeSceneTransition.Instance.TransitionToScene(targetscene);
+        }
     }
 }

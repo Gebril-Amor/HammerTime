@@ -7,6 +7,7 @@ public class scrcarrot : MonoBehaviour
   public bool open = false;
     public Sprite openSprite;
     public Sprite closedSprite;
+    public float timer = 2f;
 
     private SpriteRenderer sr;
     private Collider2D col;
@@ -26,7 +27,7 @@ public class scrcarrot : MonoBehaviour
     public void openCarrot()
     {
         open = true;
-        Invoke(nameof(closeCarrot), 2f);
+        Invoke(nameof(closeCarrot), timer);
         AudioSource audio = Camera.main.GetComponent<AudioSource>();
          if (audio == null)
          audio = Camera.main.gameObject.AddComponent<AudioSource>();

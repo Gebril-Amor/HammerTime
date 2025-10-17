@@ -61,27 +61,41 @@ public class scrhp : MonoBehaviour
             hearts[i].sprite = (i < hp) ? fullHeart : emptyHeart;
         }
     }
-    
+
     public void TakeDamage(int damage)
     {
         hp -= 1;
         SetHealth(hp);
-                       AudioSource audio = Camera.main.GetComponent<AudioSource>();
-                if (audio == null)
-                    audio = Camera.main.gameObject.AddComponent<AudioSource>();
+        AudioSource audio = Camera.main.GetComponent<AudioSource>();
+        if (audio == null)
+            audio = Camera.main.gameObject.AddComponent<AudioSource>();
 
-                AudioClip snd = Resources.Load<AudioClip>("sfx/sndhurt");
-                if (audio != null && snd != null)
-                {
-                    audio.PlayOneShot(snd, 0.5f);
-                }
-                else
-                {
-                    Debug.Log("Audio clip not found");
-                }
+        AudioClip snd = Resources.Load<AudioClip>("sfx/sndhurt");
+        if (audio != null && snd != null)
+        {
+            audio.PlayOneShot(snd, 0.5f);
+        }
+        else
+        {
+            Debug.Log("Audio clip not found");
+        }
+        scrmovement movement = GetComponent<scrmovement>();
+        if (movement != null)
+            movement.SetActionFalse();
         if (hp <= 0)
         {
-            Destroy(gameObject);
+            Invoke("TriggerGameOver", 0.5f);
+        gameObject.SetActive(false);
+            
         }
     }
+    
+    void TriggerGameOver()
+{
+    if (FadeSceneTransition.Instance != null)
+    {
+            FadeSceneTransition.Instance.TriggerGameOver();
+      
+    }
+}
 }

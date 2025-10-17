@@ -46,6 +46,7 @@ public class PlayerChargesUI : MonoBehaviour
             img.rectTransform.anchoredPosition = new Vector2(i * spacing - (maxCharges - 1) * spacing / 2, 0);
             bolts[i] = img;
         }
+        SetCharges(charges);
     }
 
     void Update()
